@@ -44,6 +44,7 @@ class ServerThreads{
     
     
 }
+
 class ThreadConnect implements Runnable {
     private Thread t;
     private Socket socket;
@@ -71,7 +72,7 @@ class ThreadConnect implements Runnable {
 	    os = socket.getOutputStream();
 	    is = socket.getInputStream();
 	    sc = new Scanner(is);
-	    sc.useDelimiter(".*\n");
+	    sc.useDelimiter("\n");
 	}catch (Exception e){
 	    System.out.println(e.toString());
 	    return;
