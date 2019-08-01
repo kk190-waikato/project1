@@ -92,19 +92,18 @@ public class RaidList {
 	return ret;
     }
     
-    public synchronized String[] getActive() {
+    public synchronized String[] getUpdate() {
 	Raid temp = head;
 	if(count() == 0){
 	    String[] ret = new String[1];
-	    ret[0] = "None\n";
+	    ret[0] = "";
 	    return ret;
 	}
 	String[] ret = new String[count()];
 	while(temp.getNext() != null){
 	    temp = temp.getNext();
-	    if(temp.isActive() == true) {
-		ret[temp.getId()] = temp.getRaiderUpdate();
-	    }
+	    ret[temp.getId()] = temp.getRaiderUpdate();
+	    
 	}
 	return ret;
     }
@@ -240,8 +239,13 @@ class Raid {
     
     //this method gets the users that have states in the raid
     public String getRaiderUpdate(){
-	return Integer.toString(id) + "\n" + Integer.toString(raidersInterested) + "\n" + Integer.toString(raidersGoing) + "\n" + Integer.toString(raidersThereSoon) + "\n" + Integer.toString(raidersReady) + "\n";
+	String raiders =  Integer.toString(id) + "\n" + Integer.toString(raidersInterested) + "\n" + Integer.toString(raidersGoing) + "\n" + Integer.toString(raidersThereSoon) + "\n" + Integer.toString(raidersReady) + "\n";
+	String raidInfo = Integer.toString(time) + "\n" + Integer.toString(level) + "\n" + type + "\n";
+	return raiders + raidInfo;
     }
+
+
+
     //getter/setter for private variables
     public int getId() {
 	return id;

@@ -105,26 +105,16 @@ class ThreadConnect implements Runnable {
 		
 		os.write(temp.getBytes());
 	    }
-	    //user requesting status of raiders
-	    else if(code == SEND_RAIDER_UPDATE){
-		String[] raids = raid.getActive();
-		os.write(RAIDER_UPDATE.toString().getBytes());
-		for(int i = 0; i < raids.length; i++){
-		    os.write(raids[i].getBytes());
-		}
-	    }
 	    else if(code == REQUEST_RAID_LOCATION){//user requesting location of all the raids
 		String[] locations = raid.getLocations();
 		os.write(RAID_LOCATION.toString().getBytes());
 		os.write("\n".getBytes());
 		for(int i = 0; i < locations.length; i++){
 		    os.write(locations[i].getBytes());
-		    System.out.println(locations[i]);
-		    System.out.println("");
 		}
 		
 	    }
-	    else if(code == 10000){//user sending there status to the server
+	    else if(code == SEND_RAIDER_UPDATE){//user sending there status to the server
 		int id = sc.nextInt();
 		int status = sc.nextInt();
 		if(sc.hasNext() == true){
@@ -135,11 +125,15 @@ class ThreadConnect implements Runnable {
 		    raid.setRaidLevel(id, level);
 		    raid.setRaidType(id, type);
 		}
-		
 		raid.userStatus(id, code, status);
-		
 	    }
-
+	    else if(code == REQUEST_RAIDER_UPDATE){//user requesting status from a raid
+		String[] status = raid.getUpdate();
+		os.write((RAIDER_UPDATE.toString() + "\n").getBytes());
+		for(int i =0; i < status.length; i++){
+		    os.write(status[i].getBytes());
+		}
+	    }
 
 	    else if(code == USERNAME_UPDATE){
 		raid.updateUser(userCode);
