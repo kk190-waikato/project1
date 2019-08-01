@@ -49,10 +49,13 @@ class ThreadConnect implements Runnable {
     private Socket socket;
     private String threadName;
     private RaidList raid;
-    private final int RAID_LOCATION = 1;
-    private final int RAIDER_UPDATE = 2;
-    private final int RAID_LOCATION_UPDATE = 3;
-    private final int RAID_LOCATION_REQUEST = 4;
+    private final Integer RAID_LOCATION = 1;
+    private final Integer RAIDER_UPDATE = 2;
+    private final Integer RAID_LOCATION_UPDATE = 3;
+    private final Integer RAID_LOCATION_REQUEST = 4;
+    private final Integer USERNAME_UPDATE = 5;
+    private final Integer MESSAGE = 6;
+    private final Integer MESSAGE_REQUEST = 7;
     ThreadConnect(Socket s, String n, RaidList r){
 	socket = s;
 	threadName = n;
@@ -77,7 +80,7 @@ class ThreadConnect implements Runnable {
 	    while(sc.hasNext()== false){}
 	    userCode = sc.nextInt();
 	    int code = sc.nextInt();
-	    if(code == 1){
+	    if(code == RAID_LOCATION){
 		int time = sc.nextInt();
 		Double lattitude = sc.nextDouble();
 		Double longitude = sc.nextDouble();
@@ -87,20 +90,48 @@ class ThreadConnect implements Runnable {
 		System.out.println(longitude.toString());
 		System.out.println(lattitude.toString());
 		String temp;
-		temp =  Integer.toString(id).toString() + "\n" + name + "\n" + lattitude.toString() +"\n"+ longitude.toString() + "\n";
+		temp =  RAID_LOCATION.toString() + "\n"+ Integer.toString(id).toString() + "\n" + name + "\n" + lattitude.toString() +"\n"+ longitude.toString() + "\n";
 		
 		os.write(temp.getBytes());
-	    }
-	    else if(code == 2){
+	    }//Raider updates
+	    else if(code == RAIDER_UPDATE){
 		String[] raids = raid.getActive();
+		os.write(RAIDER_UPDATE.toString().getBytes());
 		for(int i = 0; i < raids.length; i++){
 		    os.write(raids[i].getBytes());
 		}
-		os.write("Done".getBytes());
 	    }
-	    else if(code == 5){
+
+
+	    
+	    else if(code == RAID_LOCATION_UPDATE){
+
+	    }
+	    else if(code == RAID_LOCATION_REQUEST){
+
+	    }
+
+
+
+
+
+
+
+
+
+
+	    else if(code == USERNAME_UPDATE){
 		raid.updateUser(userCode);
 	    }
+	    else if(code == MESSAGE){
+		String name = sc.next();
+		int raidId = sc.nextInt();
+		while(sc.hasNext() == true){
+		    String content = sc.next();
+		    raid.addMessage(name,raidId, content);
+		}
+	    }
+	    else if(code == MESSAGE_REQUEST){}
 	}catch (Exception e){
 	    System.out.println(e.toString());
 		return;

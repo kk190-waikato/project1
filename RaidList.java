@@ -28,6 +28,9 @@ public class RaidList {
 	    temp.update();
 	}
     }
+    public void addMessage(String name, int raidId, String messageConent){
+	//TODO
+    }
     
 
 
@@ -85,7 +88,7 @@ public class RaidList {
 	while(temp.getNext() != null){
 	    temp = temp.getNext();
 	    if(temp.isActive() == true) {
-		ret[temp.getId()] = temp.getUpdate();
+		ret[temp.getId()] = temp.getRaiderUpdate();
 	    }
 	}
 	return ret;
@@ -156,6 +159,7 @@ class Raid {
 	next = next_;
 	longitude = long_;
 	lattitude = latt_;
+	//length of array is 7 becuase with that amount of people the raid is trivial
 	raiderInterested = new long[7];
 	raiderGoing = new long[7];
 	raiderThereSoon = new long[7];
@@ -214,10 +218,40 @@ class Raid {
     public void notInterest(){people_interested--;}
     
     //this method turns all the class info a string to send to the user
-    public String getUpdate(){
+    public String getRaiderUpdate(){
 	String ret = "";
-	//id, state, level, type
-	ret =  Integer.toString(id).toString() + "\n" + name + "\n" + lattitude.toString() +"\n"+ longitude.toString() + "\n";
+	int ready = 0;
+	int interested = 0;
+	int thereSoon = 0;
+	int going = 0;
+	
+	
+	for(int i = 0; i<raiderReady.length; i++){
+	    if(raiderGoing[i] == 0){
+		going = i;
+		break;
+	    }
+	}
+	for(int i = 0; i<raiderReady.length; i++){
+	    if(raiderInterested[i] == 0){
+		interested = i;
+		break;
+	    }
+	}
+	for(int i = 0; i<raiderReady.length; i++){
+	    if(raiderThereSoon[i] == 0){
+		thereSoon = i;
+		break;
+	    }
+	}
+	for(int i = 0; i<raiderReady.length; i++){
+	    if(raiderReady[i] == 0){
+		ready = i;
+		break;
+	    }
+	}
+	ret = Integer.toString(id) + "\n" + Integer.toString(interested) + "\n" + Integer.toString(going) + "\n" + Integer.toString(thereSoon) + "\n" + Integer.toString(ready) + "\n";
+	
 	return ret;
     }
     //getter/setter for private variables
