@@ -121,7 +121,6 @@ class ThreadConnect implements Runnable {
 		    System.out.println(locations[i]);
 		}
 		
-		os.close();
 	    }
 	    else if(code == 10000){//user sending there status to the server
 		int id = sc.nextInt();
@@ -140,14 +139,6 @@ class ThreadConnect implements Runnable {
 	    }
 
 
-
-
-
-
-
-
-
-
 	    else if(code == USERNAME_UPDATE){
 		raid.updateUser(userCode);
 	    }
@@ -160,9 +151,11 @@ class ThreadConnect implements Runnable {
 		}
 	    }
 	    else if(code == REQUEST_MESSAGE){}
+	    socket.close();
 	}catch (Exception e){
 	    System.out.println(e.toString());
-		return;
+	    socket.close();
+	    return;
 	}
     }
     
