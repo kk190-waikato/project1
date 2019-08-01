@@ -95,8 +95,21 @@ public class RaidList {
 	}
 	return ret;
     }
-    
-    public synchronized String[] getUpdate() {
+    public synchronized String[] getRaidUpdate(){
+	Raid temp = head;
+	if(count() == 0){
+	    String[] ret = new String[1];
+	    ret[0] = "";
+	    return ret;
+	}
+	String[] ret = new String[count()];
+	while(temp.getNext() != null){
+	    temp = temp.getNext();
+	    ret[temp.getId()] = temp.getRaidUpdate();
+	}
+	return ret;
+    }
+    public synchronized String[] getRaiderUpdate() {
 	Raid temp = head;
 	if(count() == 0){
 	    String[] ret = new String[1];
@@ -241,12 +254,18 @@ class Raid {
     public String getRaidLocation(){
 	return Integer.toString(id) + "\n" + name + "\n" + lattitude.toString() + "\n" + longitude.toString() + "\n";
     }
-    
-    //this method gets the users that have states in the raid
     public String getRaiderUpdate(){
 	String raiders =  Integer.toString(id) + "\n" + Integer.toString(raidersInterested) + "\n" + Integer.toString(raidersGoing) + "\n" + Integer.toString(raidersThereSoon) + "\n" + Integer.toString(raidersReady) + "\n";
-	String raidInfo = Integer.toString(time) + "\n" + Integer.toString(level) + "\n" + type + "\n";
-	return raiders + raidInfo;
+	return raiders;
+    }
+    
+    //this method gets the users that have states in the raid
+    public String getRaidUpdate(){
+     	String raidInfo = Integer.toString(id) + "\n" + Integer.toString(state) + "\n"; 
+	if(state != 0x1){
+	    raidInfo += Integer.toString(time) + "\n" + Integer.toString(level)+ "\n"+ type + "\n";
+	}
+	return raidInfo;
     }
 
 
