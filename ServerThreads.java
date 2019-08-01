@@ -119,14 +119,15 @@ class ThreadConnect implements Runnable {
 	    else if(code == SEND_RAID_LOCATION_UPDATE){//user sending there status to the server
 		int id = sc.nextInt();
 		int status = sc.nextInt();
-		if(sc.hasNext() == true){
-		    int time  = sc.nextInt();
-		    int level = sc.nextInt();
-		    String type = sc.next();
-		    raid.setRaidTime(id, time);
-		    raid.setRaidLevel(id, level);
-		    raid.setRaidType(id, type);
-		}
+		
+		int time  = sc.nextInt();
+		int level = sc.nextInt();
+		String type = sc.next();
+		raid.setRaidTime(id, time);
+		raid.setRaidLevel(id, level);
+		raid.setRaidType(id, type);
+		raid.setStatus(id, status);
+		    
 		//raid.userStatus(id, code, status);
 	    }
 	    
