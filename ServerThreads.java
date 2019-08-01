@@ -117,6 +117,7 @@ class ThreadConnect implements Runnable {
 		os.write(RAID_LOCATION_UPDATE.toString().getBytes());
 		for(int i = 0; i < locations.length; i++){
 		    os.write(locations[i].getBytes());
+		    System.out.println(locations[i]);
 		}
 	    }
 	    else if(code == 10000){//user sending there status to the server
