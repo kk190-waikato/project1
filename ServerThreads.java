@@ -127,7 +127,7 @@ class ThreadConnect implements Runnable {
 		    raid.setRaidLevel(id, level);
 		    raid.setRaidType(id, type);
 		}
-		raid.userStatus(id, code, status);
+		//raid.userStatus(id, code, status);
 	    }
 	    
 	    else if(code == REQUEST_RAIDER_UPDATE){//user requesting status from a raid

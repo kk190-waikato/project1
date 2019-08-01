@@ -41,6 +41,10 @@ public class RaidList {
 	Raid temp = find(id);
 	temp.setType(type);
     }
+    public synchronized void setRaidState(int id, int state){
+	Raid temp = find(id);
+	temp.setState(state);
+    }
     
     public synchronized void addMessage(String name, int raidId, String messageConent){
 	//TODO
@@ -156,6 +160,7 @@ class Raid {
     private int people_going;
     private int level;
     private int time;
+    private int state;
     private String type;
     private Boolean hatched;
     private Raid next;
@@ -262,6 +267,9 @@ class Raid {
 
     public void setType(String s) {
 	type = s;
+    }
+    public void setStatus(int s){
+	state =s;
     }
     public String getType() {
 	return type;
