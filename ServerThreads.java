@@ -92,7 +92,7 @@ class ThreadConnect implements Runnable {
 	    while(sc.hasNext()== false){}
 	    userCode = sc.nextLong();
 	    int code = sc.nextInt();
-	    System.out.println("connection");
+	    System.out.println("Code: " + code);
 	    if(code == SEND_RAID_LOCATION){//user sending raid location
 		int time = sc.nextInt();
 		String name = sc.next();
@@ -135,6 +135,7 @@ class ThreadConnect implements Runnable {
 		os.write((RAIDER_UPDATE.toString() + "\n").getBytes());
 		for(int i =0; i < status.length; i++){
 		    os.write(status[i].getBytes());
+		    System.out.println(status[i].length)
 		}
 	    }
 
