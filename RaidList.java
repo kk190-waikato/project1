@@ -235,12 +235,12 @@ class Raid {
 	}
     }
     public String getRaidLocation(){
-	return Integer.toString(id) + "\n" + name + "\n" + lattitude.toString() + "\n" + longitude.toString() +"\n";
+	return Integer.toString(id) + "\n" + name + "\n" + lattitude.toString() + "\n" + longitude.toString();
     }
     
     //this method gets the users that have states in the raid
     public String getRaiderUpdate(){
-	return Integer.toString(id) + "\n" + Integer.toString(raidersInterested) + "\n" + Integer.toString(raidersGoing) + "\n" + Integer.toString(raidersThereSoon) + "\n" + Integer.toString(raidersReady) + "\n";
+	return Integer.toString(id) + "\n" + Integer.toString(raidersInterested) + "\n" + Integer.toString(raidersGoing) + "\n" + Integer.toString(raidersThereSoon) + "\n" + Integer.toString(raidersReady);
     }
     //getter/setter for private variables
     public int getId() {
