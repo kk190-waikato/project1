@@ -80,15 +80,14 @@ public class RaidList {
 	Raid temp = head;
 	if(count() == 0){
 	    String[] ret = new String[1];
-	    ret[0] = "None\n";
+	    ret[0] = "";
 	    return ret;
 	}
 	String[] ret = new String[count()];
 	while(temp.getNext() != null){
 	    temp = temp.getNext();
-	    if(temp.isActive() == true) {
-		ret[temp.getId()] = temp.getRaidLocation();
-	    }
+	    ret[temp.getId()] = temp.getRaidLocation();
+	    
 	}
 	return ret;
     }

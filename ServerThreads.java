@@ -119,6 +119,7 @@ class ThreadConnect implements Runnable {
 		for(int i = 0; i < locations.length; i++){
 		    os.write(locations[i].getBytes());
 		    System.out.println(locations[i]);
+		    System.out.println("");
 		}
 		
 	    }
