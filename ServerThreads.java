@@ -135,7 +135,7 @@ class ThreadConnect implements Runnable {
 		os.write((RAIDER_UPDATE.toString() + "\n").getBytes());
 		for(int i =0; i < status.length; i++){
 		    os.write(status[i].getBytes());
-		    System.out.println(status[i].length)
+		    System.out.println(status[i]);
 		}
 	    }
 
