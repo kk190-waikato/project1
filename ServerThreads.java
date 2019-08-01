@@ -80,7 +80,7 @@ class ThreadConnect implements Runnable {
 	
 	try{
 	    while(sc.hasNext()== false){}
-	    userCode = sc.nextInt();
+	    userCode = sc.nextLong();
 	    int code = sc.nextInt();
 	    if(code == RAID_LOCATION){//user sending raid location
 		int time = sc.nextInt();
