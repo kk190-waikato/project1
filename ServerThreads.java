@@ -84,9 +84,9 @@ class ThreadConnect implements Runnable {
 	    int code = sc.nextInt();
 	    if(code == RAID_LOCATION){//user sending raid location
 		int time = sc.nextInt();
+		String name = sc.next();
 		Double lattitude = sc.nextDouble();
 		Double longitude = sc.nextDouble();
-		String name = sc.next();
 		int id = raid.addGym(name, longitude, lattitude);
 		System.out.println(raid.count());
 		System.out.println(longitude.toString());
@@ -95,7 +95,20 @@ class ThreadConnect implements Runnable {
 		temp =  RAID_LOCATION.toString() + "\n"+ Integer.toString(id).toString() + "\n" + name + "\n" + lattitude.toString() +"\n"+ longitude.toString() + "\n";
 		
 		os.write(temp.getBytes());
-	    }//user requesting status of raiders
+	    }
+
+
+
+
+
+
+
+
+
+
+
+
+	    //user requesting status of raiders
 	    else if(code == RAIDER_UPDATE){
 		String[] raids = raid.getActive();
 		os.write(RAIDER_UPDATE.toString().getBytes());
