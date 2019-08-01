@@ -115,7 +115,7 @@ class ThreadConnect implements Runnable {
 	    }
 	    else if(code == REQUEST_RAID_LOCATION){//user requesting location of all the raids
 		String[] locations = raid.getLocations();
-		os.write(RAID_LOCATION_UPDATE.toString().getBytes());
+		os.write(RAID_LOCATION.toString().getBytes());
 		for(int i = 0; i < locations.length; i++){
 		    os.write(locations[i].getBytes());
 		    System.out.println(locations[i]);
