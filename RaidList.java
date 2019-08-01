@@ -268,7 +268,7 @@ class Raid {
     public void setType(String s) {
 	type = s;
     }
-    public void setStatus(int s){
+    public void setState(int s){
 	state =s;
     }
     public String getType() {
