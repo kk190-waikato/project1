@@ -1,25 +1,26 @@
 import java.io.*;
 
 public class RaidList {
+    
     private Raid head;
     private User userHead;
-
+    
     public RaidList(){
 	userHead = new User(0, null);
 	head = new Raid(-1, null, null, 0, 0);
     }
-    public int addGym(String name, Double long_, Double latt_) {
+    public synchronized int addGym(String name, Double long_, Double latt_) {
 	int id = count();
 	Raid new_ = new Raid(id, name, head.getNext(), long_, latt_);
 	head.setNext(new_);
 	return id;
     }
-    public void addUser(long id, String name){
+    public synchronized void addUser(long id, String name){
 	User new_ = new User(id, name);
 	new_.setNext(userHead.getNext());
 	userHead.setNext(new_);
     }
-    public void updateUser(long id_){
+    public synchronized void updateUser(long id_){
 	User temp = findUser(id_);
 	if(temp == null){
 	    addUser(id_, Long.toString(id_));
@@ -28,56 +29,87 @@ public class RaidList {
 	    temp.update();
 	}
     }
-    public void addMessage(String name, int raidId, String messageConent){
+    public synchronized void setRaidTime(int id, int time){
+	Raid temp = find(id);
+	temp.setTime(time);
+    }
+    public synchronized void setRaidLevel(int id, int level){
+	Raid temp = find(id);
+	temp.setLevel(level);
+    }
+    public synchronized void setRaidType(int id, String type){
+	Raid temp = find(id);
+	temp.setType(type);
+    }
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+    public synchronized void addMessage(String name, int raidId, String messageConent){
 	//TODO
     }
     
 
 
     
-    public void activate(int id_, int level_) {
+    public synchronized void activate(int id_, int level_) {
 	
     }
     
-    public void deactivate(int i) {
+    public synchronized void deactivate(int i) {
 	find(i).deactivate();
     }
 
 
-    public Boolean addGoing(int id, long userCode) {
-        Raid temp = find(id);
-	if(temp == null){
-	    return false;
+    public synchronized void userStatus(int id, long userCode, int status) {
+	Raid temp = find(id);
+	switch(status){
+	case 0:
+	    temp.addInterested(userCode);
+	    break;
+	case 1:
+	    temp.addGoing(userCode);
+	    break;
+	case 2:
+	    temp.addThereSoon(userCode);
+	    break;
+	case 3:
+	    temp.addReady(userCode);
+	    break;
+
 	}
-	temp.addGoing(userCode);
-	return true;
-    }
-    public Boolean notGoing(int i) {
-	Raid temp = find(i);
-	if(temp == null){
-	    return false;
-	}
-	temp.notGoing();
-	return true;
-    }
-    public Boolean addInterest(int i, long userCode){
-	Raid temp = find(i);
-	if(temp == null){
-	    return false;
-	}
-	temp.addInterested(userCode);
-	return true;
-    }
-    public Boolean notInterest(int i){
-	Raid temp = find(i);
-	if(temp == null){
-	    return false;
-	}
-	temp.notInterest();
-	return false;
     }
     
-    public String[] getActive() {
+    
+
+    
+    public synchronized String[] getLocations(){
+	Raid temp = head;
+	if(count() == 0){
+	    String[] ret = new String[1];
+	    ret[0] = "None\n";
+	    return ret;
+	}
+	String[] ret = new String[count()];
+	while(temp.getNext() != null){
+	    temp = temp.getNext();
+	    if(temp.isActive() == true) {
+		ret[temp.getId()] = temp.getRaidLocation();
+	    }
+	}
+	return ret;
+    }
+    
+    public synchronized String[] getActive() {
 	Raid temp = head;
 	if(count() == 0){
 	    String[] ret = new String[1];
@@ -95,7 +127,7 @@ public class RaidList {
     }
     
     //list specific functions
-    public int count() {
+    public synchronized int count() {
 	Raid temp = head;
 	int count = 0;
 	while(temp.getNext() != null) {
@@ -104,7 +136,7 @@ public class RaidList {
 	}
 	return count;
     }
-    private Raid find(int i) {
+    private synchronized Raid find(int i) {
 	Raid temp = head;
 	while (true) {
 	    if(temp.getId() == i){
@@ -118,7 +150,7 @@ public class RaidList {
 	    }
 	}
     }
-    private User findUser(long i){
+    private synchronized User findUser(long i){
 	User temp = userHead;
 	while(true){
 	    if(temp.getCode() == i){
@@ -141,17 +173,21 @@ class Raid {
     private int people_interested;
     private int people_going;
     private int level;
-    private String pokemon;
+    private int time;
+    private String type;
     private Boolean hatched;
     private Raid next;
     private String name;
     private Double longitude;
     private Double lattitude;
+    private int raidersInterested;
+    private int raidersGoing;
+    private int raidersThereSoon;
+    private int raidersReady;
     private long[] raiderInterested;
     private long[] raiderGoing;
     private long[] raiderThereSoon;
     private long[] raiderReady;
-    
     
     public Raid(int id_, String name_, Raid next_, double long_, double latt_) {
 	id = id_;
@@ -177,34 +213,35 @@ class Raid {
 	people_interested = 0;
 	people_going = 0;
 	level = 0;
-	pokemon = "";
+	type = "";
 	hatched = false;
     }
+    
     public void addGoing(long userCode){
-	for(int i = 0; i < raiderGoing.length; i++){
-	    if(raiderGoing[i] == 0){}
-	    else{
-		raiderGoing[i] = userCode;
-		break;
-	    }
+	if(raidersGoing > 6){
+	    raidersGoing++;
+	    return;
 	}
+	raidersGoing++;
+	raiderGoing[raidersGoing - 1] = userCode;
     }
     public void addInterested(long userCode){
-	for(int i = 0; i < raiderInterested.length; i++){
-	    if(raiderInterested[i] == 0){}
-	    else{
-		raiderInterested[i] = userCode;
-	    }
+	if(raidersInterested > 6 ){
+	    raidersInterested++;
+	    return;
 	}
+	raidersInterested++;
+	raiderInterested[raidersInterested - 1] = userCode;
+	
     }
     
     public void addThereSoon(long userCode){
-	for(int i = 0; i < raiderThereSoon.length; i++){
-	    if(raiderThereSoon[i] == 0){}
-	    else{
-		raiderThereSoon[i] = userCode;
-	    }
+	if(raidersThereSoon > 6){
+	    raidersThereSoon++;
+	    return;
 	}
+	raidersThereSoon++;
+	raiderThereSoon[raidersThereSoon -1] = userCode;
     }
     public void addReady(long userCode){
 	for(int i = 0; i < raiderReady.length; i++){
@@ -214,45 +251,13 @@ class Raid {
 	    }
 	}
     }
-    public void notGoing(){people_going--;}
-    public void notInterest(){people_interested--;}
+    public String getRaidLocation(){
+	return Integer.toString(id) + "\n" + name + "\n" + lattitude.toString() + "\n" + longitude.toString() +"\n";
+    }
     
-    //this method turns all the class info a string to send to the user
+    //this method gets the users that have states in the raid
     public String getRaiderUpdate(){
-	String ret = "";
-	int ready = 0;
-	int interested = 0;
-	int thereSoon = 0;
-	int going = 0;
-	
-	
-	for(int i = 0; i<raiderReady.length; i++){
-	    if(raiderGoing[i] == 0){
-		going = i;
-		break;
-	    }
-	}
-	for(int i = 0; i<raiderReady.length; i++){
-	    if(raiderInterested[i] == 0){
-		interested = i;
-		break;
-	    }
-	}
-	for(int i = 0; i<raiderReady.length; i++){
-	    if(raiderThereSoon[i] == 0){
-		thereSoon = i;
-		break;
-	    }
-	}
-	for(int i = 0; i<raiderReady.length; i++){
-	    if(raiderReady[i] == 0){
-		ready = i;
-		break;
-	    }
-	}
-	ret = Integer.toString(id) + "\n" + Integer.toString(interested) + "\n" + Integer.toString(going) + "\n" + Integer.toString(thereSoon) + "\n" + Integer.toString(ready) + "\n";
-	
-	return ret;
+	return Integer.toString(id) + "\n" + Integer.toString(raidersInterested) + "\n" + Integer.toString(raidersGoing) + "\n" + Integer.toString(raidersThereSoon) + "\n" + Integer.toString(raidersReady) + "\n";
     }
     //getter/setter for private variables
     public int getId() {
@@ -268,11 +273,11 @@ class Raid {
 	return active;
     }
 
-    public void setPokemon(String s) {
-	pokemon = s;
+    public void setType(String s) {
+	type = s;
     }
-    public String getPokemon() {
-	return pokemon;
+    public String getType() {
+	return type;
     }
     public void setLevel(int i) {
 	level = i;
@@ -283,6 +288,9 @@ class Raid {
 
     public String getName() {
 	return name;
+    }
+    public void setTime(int i){
+	time = i;
     }
 }
 

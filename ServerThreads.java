@@ -71,6 +71,7 @@ class ThreadConnect implements Runnable {
 	    os = socket.getOutputStream();
 	    is = socket.getInputStream();
 	    sc = new Scanner(is);
+	    sc.useDelimiter(".*\n");
 	}catch (Exception e){
 	    System.out.println(e.toString());
 	    return;
@@ -80,7 +81,7 @@ class ThreadConnect implements Runnable {
 	    while(sc.hasNext()== false){}
 	    userCode = sc.nextInt();
 	    int code = sc.nextInt();
-	    if(code == RAID_LOCATION){
+	    if(code == RAID_LOCATION){//user sending raid location
 		int time = sc.nextInt();
 		Double lattitude = sc.nextDouble();
 		Double longitude = sc.nextDouble();
@@ -93,7 +94,7 @@ class ThreadConnect implements Runnable {
 		temp =  RAID_LOCATION.toString() + "\n"+ Integer.toString(id).toString() + "\n" + name + "\n" + lattitude.toString() +"\n"+ longitude.toString() + "\n";
 		
 		os.write(temp.getBytes());
-	    }//Raider updates
+	    }//user requesting status of raiders
 	    else if(code == RAIDER_UPDATE){
 		String[] raids = raid.getActive();
 		os.write(RAIDER_UPDATE.toString().getBytes());
@@ -101,14 +102,30 @@ class ThreadConnect implements Runnable {
 		    os.write(raids[i].getBytes());
 		}
 	    }
-
-
-	    
-	    else if(code == RAID_LOCATION_UPDATE){
-
+	    else if(code == RAID_LOCATION_UPDATE){//user requesting location of all the raids
+		String[] locations = raid.getLocations();
+		os.write(RAID_LOCATION_UPDATE.toString().getBytes());
+		for(int i = 0; i < locations.length; i++){
+		    os.write(locations[i].getBytes());
+		}
 	    }
 	    else if(code == RAID_LOCATION_REQUEST){
 
+	    }
+	    else if(code == 10000){//user sending there status to the server
+		int id = sc.nextInt();
+		int status = sc.nextInt();
+		if(sc.hasNext() == true){
+		    int time  = sc.nextInt();
+		    int level = sc.nextInt();
+		    String type = sc.next();
+		    raid.setRaidTime(id, time);
+		    raid.setRaidLevel(id, level);
+		    raid.setRaidType(id, type);
+		}
+		
+		raid.userStatus(id, code, status);
+		
 	    }
 
 
