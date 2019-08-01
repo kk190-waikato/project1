@@ -154,7 +154,7 @@ class ThreadConnect implements Runnable {
 	    socket.close();
 	}catch (Exception e){
 	    System.out.println(e.toString());
-	    socket.close();
+	    
 	    return;
 	}
     }
