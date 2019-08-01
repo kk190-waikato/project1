@@ -42,28 +42,12 @@ public class RaidList {
 	temp.setType(type);
     }
     
-
-
-
-
-
-
-
-
-
-
-
-    
     public synchronized void addMessage(String name, int raidId, String messageConent){
 	//TODO
     }
     
 
 
-    
-    public synchronized void activate(int id_, int level_) {
-	
-    }
     
     public synchronized void deactivate(int i) {
 	find(i).deactivate();

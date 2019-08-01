@@ -50,13 +50,21 @@ class ThreadConnect implements Runnable {
     private Socket socket;
     private String threadName;
     private RaidList raid;
-    private final Integer RAID_LOCATION = 1;
-    private final Integer RAIDER_UPDATE = 2;
-    private final Integer RAID_LOCATION_UPDATE = 3;
-    private final Integer RAID_LOCATION_REQUEST = 4;
-    private final Integer USERNAME_UPDATE = 5;
-    private final Integer MESSAGE = 6;
-    private final Integer MESSAGE_REQUEST = 7;
+    private final Integer RAID_LOCATION = 0x00;
+    private final Integer SEND_RAID_LOCATION = 0x01;
+    private final Integer REQUEST_RAID_LOCATION = 0X02;
+    
+    private final Integer RAID_LOCATION_UPDATE = 0x10;
+    
+    private final Integer RAIDER_UPDATE = 0x20;
+    private final Integer SEND_RAIDER_UPDATE = 0x21;
+    private final Integer REQUEST_RAIDER_UPDATE = 0x22;
+    
+    
+    private final Integer USERNAME_UPDATE = 0x30;
+    private final Integer MESSAGE = 0x40;
+    private final Integer SEND_MESSAGE = 0x41;
+    private final Integer REQUEST_MESSAGE = 0x42;
     ThreadConnect(Socket s, String n, RaidList r){
 	socket = s;
 	threadName = n;
@@ -82,7 +90,7 @@ class ThreadConnect implements Runnable {
 	    while(sc.hasNext()== false){}
 	    userCode = sc.nextLong();
 	    int code = sc.nextInt();
-	    if(code == RAID_LOCATION){//user sending raid location
+	    if(code == SEND_RAID_LOCATION){//user sending raid location
 		int time = sc.nextInt();
 		String name = sc.next();
 		Double lattitude = sc.nextDouble();
@@ -96,35 +104,20 @@ class ThreadConnect implements Runnable {
 		
 		os.write(temp.getBytes());
 	    }
-
-
-
-
-
-
-
-
-
-
-
-
 	    //user requesting status of raiders
-	    else if(code == RAIDER_UPDATE){
+	    else if(code == SEND_RAIDER_UPDATE){
 		String[] raids = raid.getActive();
 		os.write(RAIDER_UPDATE.toString().getBytes());
 		for(int i = 0; i < raids.length; i++){
 		    os.write(raids[i].getBytes());
 		}
 	    }
-	    else if(code == RAID_LOCATION_UPDATE){//user requesting location of all the raids
+	    else if(code == REQUEST_RAID_LOCATION){//user requesting location of all the raids
 		String[] locations = raid.getLocations();
 		os.write(RAID_LOCATION_UPDATE.toString().getBytes());
 		for(int i = 0; i < locations.length; i++){
 		    os.write(locations[i].getBytes());
 		}
-	    }
-	    else if(code == RAID_LOCATION_REQUEST){
-
 	    }
 	    else if(code == 10000){//user sending there status to the server
 		int id = sc.nextInt();
@@ -154,7 +147,7 @@ class ThreadConnect implements Runnable {
 	    else if(code == USERNAME_UPDATE){
 		raid.updateUser(userCode);
 	    }
-	    else if(code == MESSAGE){
+	    else if(code == SEND_MESSAGE){
 		String name = sc.next();
 		int raidId = sc.nextInt();
 		while(sc.hasNext() == true){
@@ -162,7 +155,7 @@ class ThreadConnect implements Runnable {
 		    raid.addMessage(name,raidId, content);
 		}
 	    }
-	    else if(code == MESSAGE_REQUEST){}
+	    else if(code == REQUEST_MESSAGE){}
 	}catch (Exception e){
 	    System.out.println(e.toString());
 		return;
