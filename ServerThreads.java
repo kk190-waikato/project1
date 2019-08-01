@@ -55,10 +55,12 @@ class ThreadConnect implements Runnable {
     private final Integer REQUEST_RAID_LOCATION = 0X02;
     
     private final Integer RAID_LOCATION_UPDATE = 0x10;
+    private final Integer SEND_RAID_LOCATION_UPDATE = 0x11;
     
     private final Integer RAIDER_UPDATE = 0x20;
     private final Integer SEND_RAIDER_UPDATE = 0x21;
     private final Integer REQUEST_RAIDER_UPDATE = 0x22;
+    
     
     
     private final Integer USERNAME_UPDATE = 0x30;
@@ -114,7 +116,7 @@ class ThreadConnect implements Runnable {
 		}
 		
 	    }
-	    else if(code == SEND_RAIDER_UPDATE){//user sending there status to the server
+	    else if(code == SEND_RAID_LOCATION_UPDATE){//user sending there status to the server
 		int id = sc.nextInt();
 		int status = sc.nextInt();
 		if(sc.hasNext() == true){
@@ -127,6 +129,7 @@ class ThreadConnect implements Runnable {
 		}
 		raid.userStatus(id, code, status);
 	    }
+	    
 	    else if(code == REQUEST_RAIDER_UPDATE){//user requesting status from a raid
 		String[] status = raid.getUpdate();
 		os.write((RAIDER_UPDATE.toString() + "\n").getBytes());
