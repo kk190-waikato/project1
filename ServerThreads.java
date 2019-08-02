@@ -103,10 +103,7 @@ class ThreadConnect implements Runnable {
 		System.out.println(raid.count());
 		System.out.println(longitude.toString());
 		System.out.println(lattitude.toString());
-		String temp;
-		temp =  RAID_LOCATION.toString() + "\n"+ Integer.toString(id).toString() + "\n" + name + "\n" + lattitude.toString() +"\n"+ longitude.toString() + "\n";
 		
-		os.write(temp.getBytes());
 	    }
 	    else if(code == REQUEST_RAID_LOCATION){//user requesting location of all the raids
 		String[] locations = raid.getLocations();
@@ -114,6 +111,7 @@ class ThreadConnect implements Runnable {
 		os.write("\n".getBytes());
 		for(int i = 0; i < locations.length; i++){
 		    os.write(locations[i].getBytes());
+		    System.out.println(locations[i]);
 		}
 		
 	    }
@@ -140,8 +138,11 @@ class ThreadConnect implements Runnable {
 		    System.out.println(status[i]);
 		}
 	    }
-	    else if(code == SEND_RAIDER_UPDATE){//TODO
+	    else if(code == SEND_RAIDER_UPDATE){
+		int raidId = sc.nextInt();
 		int status = sc.nextInt();
+		raid.userStatus(id, userCode, status);
+		
 	    }
 	    else if(code == REQUEST_RAID_LOCATION_UPDATE) {//user requesting info about the raid
 		String[] status = raid.getRaidUpdate();
