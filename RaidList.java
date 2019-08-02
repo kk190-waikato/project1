@@ -20,12 +20,14 @@ public class RaidList {
 	new_.setNext(userHead.getNext());
 	userHead.setNext(new_);
     }
-    public synchronized void updateUser(long id_){
+    public synchronized void updateUser(long id_, String name){
 	User temp = findUser(id_);
 	if(temp == null){
 	    addUser(id_, Long.toString(id_));
+	    temp.getnext().setName(name);
 	}
 	else{
+	    temp.setName(name);
 	    temp.update();
 	}
     }
