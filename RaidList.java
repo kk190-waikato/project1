@@ -155,8 +155,12 @@ public class RaidList {
     public synchronized void clean(){
 	Raid temp = head;
 	while (temp.getNext() != null){
+	    Raid temp2 = temp;
 	    temp = temp.getNext();
-	    
+	    temp.setTime(temp.getTime() -1);
+	    if(temp.getTime() <= 0){
+		temp2.setNext(temp.getNext());
+	    }
 	}
     }
     public synchronized int count() {
@@ -308,7 +312,7 @@ class Raid {
      	String raidInfo = Integer.toString(id) + "\n" + Integer.toString(state) + "\n"; 
 	if(state != 0x0){
 	    raidInfo += Integer.toString(time) + "\n" + Integer.toString(level)+ "\n"+ type + "\n";
-
+	    
 	}
 	return raidInfo;
     }
@@ -360,7 +364,7 @@ class Raid {
     public void setTime(int i){
 	time = i;
     }
-    public int getTime(int i){
+    public int getTime(){
 	return time;
     }
 }
