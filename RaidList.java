@@ -24,7 +24,7 @@ public class RaidList {
 	User temp = findUser(id_);
 	if(temp == null){
 	    addUser(id_, Long.toString(id_));
-	    temp.getnext().setName(name);
+	    temp.getNext().setName(name);
 	}
 	else{
 	    temp.setName(name);
