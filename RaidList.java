@@ -263,7 +263,8 @@ class Raid {
     public String getRaidUpdate(){
      	String raidInfo = Integer.toString(id) + "\n" + Integer.toString(state) + "\n"; 
 	if(state != 0x1){
-	    raidInfo += Integer.toString(time) + "\n" + Integer.toString(level)+ "\n"+ type + "\n";
+	    //raidInfo += Integer.toString(time) + "\n" + Integer.toString(level)+ "\n"+ type + "\n";
+	    raidInfo += "0\n1\n1\n"
 	}
 	return raidInfo;
     }
