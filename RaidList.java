@@ -263,7 +263,7 @@ class Raid {
 	level = 0;
 	type = "";
 	hatched = false;
-	state = 0x00;
+	state = 0x3;
 	messages = new Message(null, null);
     }
     public void addMessage(String userName, String content){
