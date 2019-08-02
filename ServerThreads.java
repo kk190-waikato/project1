@@ -27,6 +27,7 @@ class ServerThreads{
 	    return;
 	}
 	Integer i = 0;
+	
 	while (true){
 	    Socket socket;
 	    try {
@@ -188,5 +189,35 @@ class ThreadConnect implements Runnable {
 	    t = new Thread (this, threadName);
 	    t.start();
 	}
+    }
+}
+
+
+class RaidChecker implements Runnable{
+    private RaidList raid;
+    private Thread t;
+    private String threadName;
+    public RaidChecker(RaidList raid_, String name_){
+	raid = raid_;
+	threadName = name_;
+    }
+    
+    public void start(){
+	if (t == null){
+	    t = new Thread (this, threadName);
+	    t.start();
+	}
+    }
+    public void run(){
+	try{
+	    while(true){
+		t.sleep(1000*60);
+		raid.clean();
+	    }
+	}
+	catch(Exception e){
+	    
+	}
+	
     }
 }
