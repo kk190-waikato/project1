@@ -26,7 +26,12 @@ public class RaidList {
 	    addUser(id_, Long.toString(id_));
 	}
 	else{
-	    temp.setName(Long.toString(id_));
+	    if(temp.getName().compareTo(Long.toString(id_)) != 0){
+		//dont change the name
+	    }
+	    else{
+		temp.setName(Long.toString(id_));
+	    }
 	    temp.update();
 	}
     }
