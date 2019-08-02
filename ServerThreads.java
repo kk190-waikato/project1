@@ -169,6 +169,7 @@ class ThreadConnect implements Runnable {
 	    else if(code == REQUEST_MESSAGE){
 		int raidId = sc.nextInt();
 		os.write(MESSAGE.toString().getBytes());
+		os.write("\n".getBytes());
 		os.write(raid.getMessages(raidId).getBytes());
 		System.out.println(raid.getMessages(raidId));
 	    }
