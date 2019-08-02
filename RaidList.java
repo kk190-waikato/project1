@@ -15,22 +15,32 @@ public class RaidList {
 	head.setNext(new_);
 	return id;
     }
-    public synchronized void addUser(long id, String name){
+    public synchronized void addUser(long id,String name){
 	User new_ = new User(id, name);
 	new_.setNext(userHead.getNext());
 	userHead.setNext(new_);
     }
-    public synchronized void updateUser(long id_, String name){
+    public synchronized void updateUser(long id_){
 	User temp = findUser(id_);
 	if(temp == null){
 	    addUser(id_, Long.toString(id_));
-	    temp.getNext().setName(name);
+	}
+	else{
+	    temp.setName(Long.toString(id_));
+	    temp.update();
+	}
+    }
+    public synchronized void updateUser(long id_, String name){
+	User temp = findUser(id_);
+	if(temp == null){
+	    addUser(id_, name);
 	}
 	else{
 	    temp.setName(name);
 	    temp.update();
 	}
     }
+    
     public synchronized void setRaidTime(int id, int time){
 	Raid temp = find(id);
 	temp.setTime(time);

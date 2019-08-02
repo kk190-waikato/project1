@@ -95,6 +95,7 @@ class ThreadConnect implements Runnable {
 	    while(sc.hasNext()== false){}
 	    userCode = sc.nextLong();
 	    int code = sc.nextInt();
+	    raid.updateUser(userCode);
 	    System.out.println("Code: " + code);
 	    if(code == SEND_RAID_LOCATION){//user sending raid location
 		int time = sc.nextInt();
@@ -160,7 +161,7 @@ class ThreadConnect implements Runnable {
 	    }
 	    else if(code == SEND_MESSAGE){
 		int raidId = sc.nextInt();
-		
+	  
 		String content = sc.next();
 		raid.addMessage(userCode,raidId, content);
 		
