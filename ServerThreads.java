@@ -62,9 +62,11 @@ class ThreadConnect implements Runnable {
     private final Integer SEND_RAIDER_UPDATE = 0x21;
     private final Integer REQUEST_RAIDER_UPDATE = 0x22;
     
-   
-    
     private final Integer USERNAME_UPDATE = 0x30;
+    private final Integer SEND_USERNAME_UPDATE = 0x31;
+    private final Integer REQUEST_USERNAME_UPDATE = 0x32;
+  
+    
     private final Integer MESSAGE = 0x40;
     private final Integer SEND_MESSAGE = 0x41;
     private final Integer REQUEST_MESSAGE = 0x42;
@@ -152,7 +154,7 @@ class ThreadConnect implements Runnable {
 		    //System.out.println(status[i]);
 		}    
 	    }
-	    else if(code == USERNAME_UPDATE){
+	    else if(code == SEND_USERNAME_UPDATE){
 		String name = sc.next();
 		raid.updateUser(userCode, name);
 	    }
