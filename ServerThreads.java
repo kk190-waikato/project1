@@ -100,9 +100,9 @@ class ThreadConnect implements Runnable {
 		Double lattitude = sc.nextDouble();
 		Double longitude = sc.nextDouble();
 		int id = raid.addGym(name, longitude, lattitude);
-		System.out.println(raid.count());
-		System.out.println(longitude.toString());
-		System.out.println(lattitude.toString());
+		//System.out.println(raid.count());
+		//System.out.println(longitude.toString());
+		//System.out.println(lattitude.toString());
 		
 	    }
 	    else if(code == REQUEST_RAID_LOCATION){//user requesting location of all the raids
@@ -111,7 +111,7 @@ class ThreadConnect implements Runnable {
 		os.write("\n".getBytes());
 		for(int i = 0; i < locations.length; i++){
 		    os.write(locations[i].getBytes());
-		    System.out.println(locations[i]);
+		    //System.out.println(locations[i]);
 		}
 		
 	    }
@@ -127,7 +127,7 @@ class ThreadConnect implements Runnable {
 		raid.setRaidType(id, type);
 		raid.setRaidState(id, status);
 		    
-		//raid.userStatus(id, code, status);
+		
 	    }
 	    
 	    else if(code == REQUEST_RAIDER_UPDATE){//user requesting status from a raid
@@ -135,7 +135,7 @@ class ThreadConnect implements Runnable {
 		os.write((RAIDER_UPDATE.toString() + "\n").getBytes());
 		for(int i =0; i < status.length; i++){
 		    os.write(status[i].getBytes());
-		    System.out.println(status[i]);
+		    //System.out.println(status[i]);
 		}
 	    }
 	    else if(code == SEND_RAIDER_UPDATE){
@@ -149,21 +149,25 @@ class ThreadConnect implements Runnable {
 		os.write((RAID_LOCATION_UPDATE.toString() + "\n").getBytes());
 		for(int i = 0; i < status.length; i++ ){
 		    os.write(status[i].getBytes());
-		    System.out.println(status[i]);
+		    //System.out.println(status[i]);
 		}    
 	    }
 	    else if(code == USERNAME_UPDATE){
 		raid.updateUser(userCode);
 	    }
 	    else if(code == SEND_MESSAGE){
-		String name = sc.next();
 		int raidId = sc.nextInt();
 		while(sc.hasNext() == true){
 		    String content = sc.next();
-		    raid.addMessage(name,raidId, content);
+		    raid.addMessage(userCode,raidId, content);
 		}
 	    }
-	    else if(code == REQUEST_MESSAGE){}
+	    else if(code == REQUEST_MESSAGE){
+		int raidId = sc.nextInt();
+		os.write(raid.getMessages(raidId).getBytes());
+	    }
+
+
 	    socket.close();
 	}catch (Exception e){
 	    System.out.println(e.toString());

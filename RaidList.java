@@ -46,9 +46,12 @@ public class RaidList {
 	temp.setState(state);
     }
     
-    public synchronized void addMessage(String name, int raidId, String messageConent){
-	//TODO
+    public synchronized void addMessage(long userId, int raidId, String messageContent){
+	String userName = findUser(userId).getName();
+	Raid raid = find(raidId);
+	raid.addMessage(userName, messageContent);
     }
+
     
 
 
@@ -77,7 +80,10 @@ public class RaidList {
 	}
     }
     
-    
+    public synchronized String getMessages(int raidId){
+	Raid temp = find(raidId);
+	return temp.getMessages();
+    }
 
     
     public synchronized String[] getLocations(){
@@ -188,13 +194,19 @@ class Raid {
     private long[] raiderGoing;
     private long[] raiderThereSoon;
     private long[] raiderReady;
-    
+    private Message messages;
     public Raid(int id_, String name_, Raid next_, double long_, double latt_) {
 	id = id_;
 	name = name_;
 	next = next_;
 	longitude = long_;
 	lattitude = latt_;
+	state = 0x1;
+	raidersGoing = 0;
+	raidersInterested = 0;
+	raidersThereSoon = 0;
+	raidersReady = 0;
+	messages = new Message(null, null);
 	//length of array is 7 becuase with that amount of people the raid is trivial
 	raiderInterested = new long[7];
 	raiderGoing = new long[7];
@@ -202,8 +214,7 @@ class Raid {
 	raiderReady = new long[7];
     }
     
-    public void activate(){
-	
+    public void activate(){	
 	active = true;
 	
     }
@@ -216,7 +227,13 @@ class Raid {
 	type = "";
 	hatched = false;
     }
-    
+    public void addMessage(String userName, String content){
+	Message temp = messages;
+	while(temp.getNext() != null){
+	    temp = temp.getNext();
+	}
+	temp.setNext(new Message(userName, content));
+    }
     public void addGoing(long userCode){
 	if(raidersGoing > 6){
 	    raidersGoing++;
@@ -258,17 +275,26 @@ class Raid {
 	String raiders =  Integer.toString(id) + "\n" + Integer.toString(raidersInterested) + "\n" + Integer.toString(raidersGoing) + "\n" + Integer.toString(raidersThereSoon) + "\n" + Integer.toString(raidersReady) + "\n";
 	return raiders;
     }
-    
+
     //this method gets the users that have states in the raid
     public String getRaidUpdate(){
      	String raidInfo = Integer.toString(id) + "\n" + Integer.toString(state) + "\n"; 
 	if(state != 0x1){
 	    //raidInfo += Integer.toString(time) + "\n" + Integer.toString(level)+ "\n"+ type + "\n";
-	    raidInfo += "0\n1\n1\n"
+	    raidInfo += "0\n1\n1\n";
 	}
 	return raidInfo;
     }
 
+    public String getMessages(){
+	Message temp = messages;
+	String ret = "";
+	while(temp.getNext() != null){
+	    temp = temp.getNext();
+	    ret +=  temp.name +"\n" + temp.message + "\n";
+	}
+	return ret;
+    }
 
 
     //getter/setter for private variables
@@ -328,10 +354,32 @@ class User{
     public User getNext(){
 	return next;
     }
+    public String getName(){
+	return name;
+    }
     public long lastActive(){
 	return System.currentTimeMillis() - lastConnect;
     }
     public void update(){
 	lastConnect = System.currentTimeMillis();
+    }
+}
+
+
+class Message{
+    public String name;
+    public String message;
+    private Message next;
+    public Message(String name_, String message_){
+	name = name_;
+	message = message_;
+	next = null;
+    }
+    public Message getNext(){
+	return next;
+    }
+
+    public void setNext(Message next_){
+	next = next_;
     }
 }
