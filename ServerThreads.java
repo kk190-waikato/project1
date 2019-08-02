@@ -160,10 +160,10 @@ class ThreadConnect implements Runnable {
 	    }
 	    else if(code == SEND_MESSAGE){
 		int raidId = sc.nextInt();
-		while(sc.hasNext() == true){
-		    String content = sc.next();
-		    raid.addMessage(userCode,raidId, content);
-		}
+		
+		String content = sc.next();
+		raid.addMessage(userCode,raidId, content);
+		
 	    }
 	    else if(code == REQUEST_MESSAGE){
 		int raidId = sc.nextInt();
