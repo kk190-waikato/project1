@@ -359,6 +359,9 @@ class User{
     public String getName(){
 	return name;
     }
+    public void setName(String name_){
+	name = name_;
+    }
     public long lastActive(){
 	return System.currentTimeMillis() - lastConnect;
     }
