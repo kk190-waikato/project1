@@ -159,7 +159,7 @@ public class RaidList {
 	    temp = temp.getNext();
 	    temp.setTime(temp.getTime() -1);
 	    if(temp.getTime() <= 0){
-		temp2.setNext(temp.getNext());
+		temp.deactivate();
 	    }
 	}
     }
@@ -252,11 +252,18 @@ class Raid {
     
     public void deactivate(){
 	
-	people_interested = 0;
-	people_going = 0;
+	raidersInterested = 0;
+	raidersGoing = 0;
+	raidersThereSoon = 0;
+	raidersReady = 0;
+	raiderInterested = new long[7];
+	raiderGoing = new long[7];
+	raiderThereSoon = new long[7];
+	raiderReady = new long[7];
 	level = 0;
 	type = "";
 	hatched = false;
+	state = 0x00;
     }
     public void addMessage(String userName, String content){
 	Message temp = messages;
