@@ -84,7 +84,10 @@ public class RaidList {
     
     public synchronized String getMessages(int raidId){
 	Raid temp = find(raidId);
-	return temp.getMessages();
+	if(temp != null){
+	    return temp.getMessages();
+	}
+	return "";
     }
 
     
