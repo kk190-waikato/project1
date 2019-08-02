@@ -139,7 +139,7 @@ class ThreadConnect implements Runnable {
 		}
 	    }
 	    else if(code == SEND_RAIDER_UPDATE){
-		int raidId = sc.nextInt();
+		int id = sc.nextInt();
 		int status = sc.nextInt();
 		raid.userStatus(id, userCode, status);
 		
