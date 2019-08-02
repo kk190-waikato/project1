@@ -279,7 +279,7 @@ class Raid {
     //this method gets the users that have states in the raid
     public String getRaidUpdate(){
      	String raidInfo = Integer.toString(id) + "\n" + Integer.toString(state) + "\n"; 
-	if(state != 0x1){
+	if(state != 0x0){
 	    //raidInfo += Integer.toString(time) + "\n" + Integer.toString(level)+ "\n"+ type + "\n";
 	    raidInfo += "0\n1\n1\n";
 	}
