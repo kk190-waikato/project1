@@ -264,6 +264,7 @@ class Raid {
 	type = "";
 	hatched = false;
 	state = 0x00;
+	messages = new Message(null, null);
     }
     public void addMessage(String userName, String content){
 	Message temp = messages;

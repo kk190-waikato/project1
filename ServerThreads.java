@@ -27,7 +27,7 @@ class ServerThreads{
 	    return;
 	}
 	Integer i = 0;
-	
+	RaidChecker raid_ = new RaidChecker(raid, "raidChecker");
 	while (true){
 	    Socket socket;
 	    try {
@@ -93,6 +93,7 @@ class ThreadConnect implements Runnable {
 	}
 	
 	try{
+	    
 	    while(sc.hasNext()== false){}
 	    userCode = sc.nextLong();
 	    int code = sc.nextInt();
@@ -213,6 +214,7 @@ class RaidChecker implements Runnable{
 	    while(true){
 		t.sleep(1000*60);
 		raid.clean();
+		
 	    }
 	}
 	catch(Exception e){
